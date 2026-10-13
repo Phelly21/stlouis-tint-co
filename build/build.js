@@ -264,3 +264,5 @@ const lastmod = new Date().toISOString().slice(0, 10);
 const sm = pages.filter(p => p.slug !== '404').map(p => `  <url><loc>${url(p.slug)}</loc><lastmod>${p.date || lastmod}</lastmod></url>`).join('\n');
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sm}\n</urlset>\n`);
 console.log('Built', pages.length, 'pages');
+// The old WordPress site registered /sitemap_index.xml in Search Console; keep that URL alive as an index pointing at the real sitemap.
+fs.writeFileSync(path.join(ROOT, 'sitemap_index.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${S.base}/sitemap.xml</loc><lastmod>${lastmod}</lastmod></sitemap>\n</sitemapindex>\n`);
